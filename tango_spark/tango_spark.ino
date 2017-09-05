@@ -1,7 +1,7 @@
 /*******************************************************************************
 @file     tango_spark_V0.0.1.ino
 @author   Samuel Yamoah
-@version  0.0.2
+@version  0.3.0
 @date     31.08.2017
 @modified 02.09.2017
 @brief    Tango Spark LED Dress for Cocktail night
@@ -17,12 +17,12 @@ const int OUT_6 = 6;
 const int PWM_1 = 3;
 const int PWM_2 = 5;
 const int PWM_3 = 6;
-//const int PWM_4 = ;
+const int PWM_4 = 9;
 //const int PWM_5 = ;
 //const int PWM_6 = ;
-const int TOTAL_PWM = 3;
+const int TOTAL_PWM = 4;
 
-const int PWMS[TOTAL_PWM] = {PWM_1, PWM_2, PWM_3};
+const int PWMS[TOTAL_PWM] = {PWM_1, PWM_2, PWM_3, PWM_4};
 
 const int MAX_REPEATS = 50;
 const int MAX_DELAY = 500;
@@ -46,13 +46,15 @@ void setup() {
   //pinMode(PWM_4, OUTPUT);
   //pinMode(PWM_5, OUTPUT);
   //pinMode(PWM_6, OUTPUT);
+  Serial.begin(9600);
 
 
 }
 
 void loop() {
-  fade_chase();
+//  fade_chase();
 //  solid_chase();
+random_chase();
   
 
 }
@@ -132,6 +134,34 @@ void fade_chase(){
       delay(50);
     }
     digitalWrite(PWMS[i], LOW);
+  }
+}
+
+// Random Chase
+void random_chase(){
+  int prev_led = NULL;
+  for(int j = 0; j < MAX_REPEATS; j++){
+
+    int led = NULL;
+    while (led == prev_led) led = random(TOTAL_PWM);
+    Serial.print(led);
+    
+  // fade in from min to max in increments of 5 points
+    for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
+      // sets the value (range from 0 to 255):
+      analogWrite(PWMS[led], fadeValue);
+      // wait for 50 milliseconds to see the dimming effect
+      delay(50);
+    }
+
+    // fade out from max to min in decrements of 5 points
+    for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
+      // sets the value (range from 0 to 255):
+      analogWrite(PWMS[led], fadeValue);
+      // wait for 50 milliseconds to see the dimming effect
+      delay(50);
+    }
+    prev_led = led;
   }
 }
 
