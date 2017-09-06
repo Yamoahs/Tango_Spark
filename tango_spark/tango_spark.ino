@@ -1,7 +1,7 @@
 /*******************************************************************************
 @file     tango_spark_V0.0.1.ino
 @author   Samuel Yamoah
-@version  0.4.0
+@version  0.5.0
 @date     31.08.2017
 @modified 06.09.2017
 @brief    Tango Spark LED Dress for Cocktail night
@@ -58,11 +58,12 @@ void setup() {
 }
 
 void loop() {
-  fade_chase();
-  random_strobe();
-  solid_chase();
-  random_chase();
-  random_strobe(); 
+//  fade_chase();
+//  random_strobe();
+//  solid_chase();
+//  random_chase();
+//  random_strobe();
+  increment_chase(); 
 
 }
 
@@ -213,5 +214,22 @@ void random_strobe(){
 
     prev_led = led;
   }
+}
+
+// Increment on Chase
+void increment_chase(){
+  for(int repeats = 0; repeats < (FAST_MAX_REPEATS); repeats++){
+    for(int led = 0; led <= TOTAL_OUT; led ++){
+      digitalWrite(led, HIGH);
+      delay(delay_time);
+    }
+    for(int led = 0; led <= TOTAL_OUT; led ++){
+      digitalWrite(led, LOW);
+      delay(delay_time);
+    }
+    delay_time -= 50;
+    if (delay_time <= MIN_DELAY) delay_time = MIN_DELAY;
+  }
+  delay_time = MAX_DELAY;
 }
 
