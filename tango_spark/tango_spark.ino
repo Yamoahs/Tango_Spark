@@ -1,7 +1,7 @@
 /*******************************************************************************
 @file     tango_spark_V0.0.1.ino
 @author   Samuel Yamoah
-@version  0.3.0
+@version  0.3.1
 @date     31.08.2017
 @modified 02.09.2017
 @brief    Tango Spark LED Dress for Cocktail night
@@ -25,11 +25,15 @@ const int TOTAL_PWM = 4;
 const int PWMS[TOTAL_PWM] = {PWM_1, PWM_2, PWM_3, PWM_4};
 
 const int MAX_REPEATS = 50;
-const int MAX_DELAY = 500;
 const int MIN_DELAY = 50;
+const int MAX_DELAY = 500;
+const int FAST_MAX_REPEATS = 30;
+const int FAST_MIN_DELAY = 5;
+const int FAST_MAX_DELAY = 50;
 
 // Changing variables:
 int delay_time = MAX_DELAY;
+int fast_delay_time = FAST_MAX_DELAY;
 
 void setup() {
   // put your setup code here, to run once:
@@ -140,7 +144,7 @@ void fade_chase(){
 // Random Chase
 void random_chase(){
   int prev_led = NULL;
-  for(int j = 0; j < MAX_REPEATS; j++){
+  for(int repeats = 0; repeats < FAST_MAX_REPEATS; repeats++){
 
     int led = NULL;
     while (led == prev_led) led = random(TOTAL_PWM);
@@ -151,7 +155,7 @@ void random_chase(){
       // sets the value (range from 0 to 255):
       analogWrite(PWMS[led], fadeValue);
       // wait for 50 milliseconds to see the dimming effect
-      delay(50);
+      delay(fast_delay_time);
     }
 
     // fade out from max to min in decrements of 5 points
@@ -159,9 +163,13 @@ void random_chase(){
       // sets the value (range from 0 to 255):
       analogWrite(PWMS[led], fadeValue);
       // wait for 50 milliseconds to see the dimming effect
-      delay(50);
+      delay(fast_delay_time);
     }
     prev_led = led;
+    fast_delay_time -= 5;
+    if (fast_delay_time <= FAST_MIN_DELAY) fast_delay_time = FAST_MIN_DELAY;
+    //if (repeats >= MAX_REPEATS) delay_time = MAX_DELAY;
   }
+  fast_delay_time = FAST_MAX_DELAY;
 }
 
