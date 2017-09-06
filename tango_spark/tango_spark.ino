@@ -1,9 +1,9 @@
 /*******************************************************************************
 @file     tango_spark_V0.0.1.ino
 @author   Samuel Yamoah
-@version  0.3.1
+@version  0.3.2
 @date     31.08.2017
-@modified 02.09.2017
+@modified 06.09.2017
 @brief    Tango Spark LED Dress for Cocktail night
 *******************************************************************************/
 
@@ -56,9 +56,9 @@ void setup() {
 }
 
 void loop() {
-//  fade_chase();
-//  solid_chase();
-random_chase();
+  fade_chase();
+  solid_chase();
+  random_chase();
   
 
 }
@@ -116,6 +116,12 @@ void solid_chase(){
     //if (repeats >= MAX_REPEATS) delay_time = MAX_DELAY;
   }
    delay_time = MAX_DELAY;
+    digitalWrite(OUT_1, LOW);
+    digitalWrite(OUT_2, LOW);
+    digitalWrite(OUT_3, LOW);
+    digitalWrite(OUT_4, LOW);
+    digitalWrite(OUT_5, LOW);
+    digitalWrite(OUT_6, LOW);
 }
 
 // Fade Chase
