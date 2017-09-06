@@ -1,7 +1,7 @@
 /*******************************************************************************
 @file     tango_spark_V0.0.1.ino
 @author   Samuel Yamoah
-@version  0.3.2
+@version  0.4.0
 @date     31.08.2017
 @modified 06.09.2017
 @brief    Tango Spark LED Dress for Cocktail night
@@ -21,8 +21,10 @@ const int PWM_4 = 9;
 //const int PWM_5 = ;
 //const int PWM_6 = ;
 const int TOTAL_PWM = 4;
+const int TOTAL_OUT = 6;
 
 const int PWMS[TOTAL_PWM] = {PWM_1, PWM_2, PWM_3, PWM_4};
+const int OUTS[TOTAL_OUT] = {OUT_1, OUT_2, OUT_3, OUT_4, OUT_5, OUT_6}; 
 
 const int MAX_REPEATS = 50;
 const int MIN_DELAY = 50;
@@ -57,9 +59,10 @@ void setup() {
 
 void loop() {
   fade_chase();
+  random_strobe();
   solid_chase();
   random_chase();
-  
+  random_strobe(); 
 
 }
 
@@ -177,5 +180,38 @@ void random_chase(){
     //if (repeats >= MAX_REPEATS) delay_time = MAX_DELAY;
   }
   fast_delay_time = FAST_MAX_DELAY;
+}
+
+
+// Random Strobe
+void random_strobe(){
+  int prev_led = NULL;
+  for(int repeats = 0; repeats < (MAX_REPEATS *2); repeats++){
+
+    int led = NULL;
+    while (led == prev_led) led = random(TOTAL_OUT + 1);
+//    Serial.print(led);
+//    Serial.print("init ");
+
+    digitalWrite(led, HIGH);
+    delay(50);
+    digitalWrite(led, LOW);
+    delay(5);
+    digitalWrite(led, HIGH);
+    delay(50);
+    digitalWrite(led, LOW);
+    delay(50);
+    digitalWrite(led, HIGH);
+    delay(50);
+    digitalWrite(led, LOW);
+    delay(5);
+    digitalWrite(led, HIGH);
+    delay(50);
+    digitalWrite(led, LOW);
+    Serial.print("\n");
+    Serial.print(led);
+
+    prev_led = led;
+  }
 }
 
