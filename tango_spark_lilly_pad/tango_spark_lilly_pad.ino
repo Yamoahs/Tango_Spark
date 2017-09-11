@@ -52,7 +52,7 @@ void setup() {
   //pinMode(PWM_4, OUTPUT);
   //pinMode(PWM_5, OUTPUT);
   //pinMode(PWM_6, OUTPUT);
-  Serial.begin(9600);
+//  Serial.begin(9600);
 
 
 }
@@ -159,7 +159,7 @@ void random_chase(){
 
     int led = NULL;
     while (led == prev_led) led = random(TOTAL_PWM);
-    Serial.print(led);
+//    Serial.print(led);
     
   // fade in from min to max in increments of 5 points
     for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
@@ -210,8 +210,8 @@ void random_strobe(){
     digitalWrite(led, HIGH);
     delay(50);
     digitalWrite(led, LOW);
-    Serial.print("\n");
-    Serial.print(led);
+//    Serial.print("\n");
+//    Serial.print(led);
 
     prev_led = led;
   }
