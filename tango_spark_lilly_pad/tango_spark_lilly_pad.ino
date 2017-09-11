@@ -1,9 +1,9 @@
 /*******************************************************************************
-@file     tango_spark_V0.0.1.ino
+@file     tango_spark_lilly_pad.ino
 @author   Samuel Yamoah
-@version  0.6.0
+@version  1.0.0
 @date     31.08.2017
-@modified 07.09.2017
+@modified 12.09.2017
 @brief    Tango Spark LED Dress for Cocktail night
 *******************************************************************************/
 
