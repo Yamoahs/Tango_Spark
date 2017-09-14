@@ -1,30 +1,22 @@
 /*******************************************************************************
 @file     tango_spark_lilly_pad.ino
 @author   Samuel Yamoah
-@version  1.0.0
+@version  2.0.1
 @date     31.08.2017
 @modified 12.09.2017
 @brief    Tango Spark LED Dress for Cocktail night
 *******************************************************************************/
 
 // Constants Setup:
-const int OUT_1 = 7;
-const int OUT_2 = 2;
-const int OUT_3 = 3;
-const int OUT_4 = 4;
-const int OUT_5 = 5;
-const int OUT_6 = 6;
-const int PWM_1 = 3;
-const int PWM_2 = 5;
-const int PWM_3 = 6;
-const int PWM_4 = 9;
-//const int PWM_5 = ;
-//const int PWM_6 = ;
-const int TOTAL_PWM = 4;
-const int TOTAL_OUT = 6;
+const int OUT_1 = 3;
+const int OUT_2 = 5;
+const int OUT_3 = 6;
+const int OUT_4 = 9;
+const int OUT_5 = 10;
+const int OUT_6 = 11;
 
-const int PWMS[TOTAL_PWM] = {PWM_1, PWM_2, PWM_3, PWM_4};
-const int OUTS[TOTAL_OUT] = {OUT_1, OUT_2, OUT_3, OUT_4, OUT_5, OUT_6}; 
+const int TOTAL_OUT = 6;
+const int OUTS[TOTAL_OUT] = {OUT_1, OUT_2, OUT_3, OUT_4, OUT_5, OUT_6};
 
 const int MAX_REPEATS = 50;
 const int MIN_DELAY = 50;
@@ -46,12 +38,6 @@ void setup() {
   pinMode(OUT_5, OUTPUT);
   pinMode(OUT_6, OUTPUT);
 
-  pinMode(PWM_1, OUTPUT);
-  pinMode(PWM_2, OUTPUT);
-  pinMode(PWM_3, OUTPUT);
-  //pinMode(PWM_4, OUTPUT);
-  //pinMode(PWM_5, OUTPUT);
-  //pinMode(PWM_6, OUTPUT);
 //  Serial.begin(9600);
 
 
@@ -64,7 +50,7 @@ void loop() {
   random_chase();
   all_pulse();
   random_strobe();
-  increment_chase(); 
+  increment_chase();
 
 }
 
@@ -118,7 +104,6 @@ void solid_chase(){
 
     delay_time -= 10;
     if (delay_time <= MIN_DELAY) delay_time = MIN_DELAY;
-    //if (repeats >= MAX_REPEATS) delay_time = MAX_DELAY;
   }
    delay_time = MAX_DELAY;
     digitalWrite(OUT_1, LOW);
@@ -131,12 +116,12 @@ void solid_chase(){
 
 // Fade Chase
 void fade_chase(){
-  for(int i = 0; i < TOTAL_PWM; i++){
-    
+  for(int i = 0; i < TOTAL_OUT; i++){
+
   // fade in from min to max in increments of 5 points
     for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
       // sets the value (range from 0 to 255):
-      analogWrite(PWMS[i], fadeValue);
+      analogWrite(OUTS[i], fadeValue);
       // wait for 50 milliseconds to see the dimming effect
       delay(50);
     }
@@ -144,11 +129,11 @@ void fade_chase(){
     // fade out from max to min in decrements of 5 points
     for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
       // sets the value (range from 0 to 255):
-      analogWrite(PWMS[i], fadeValue);
+      analogWrite(OUTS[i], fadeValue);
       // wait for 50 milliseconds to see the dimming effect
       delay(50);
     }
-    digitalWrite(PWMS[i], LOW);
+    digitalWrite(OUTS[i], LOW);
   }
 }
 
@@ -158,13 +143,13 @@ void random_chase(){
   for(int repeats = 0; repeats < FAST_MAX_REPEATS; repeats++){
 
     int led = NULL;
-    while (led == prev_led) led = random(TOTAL_PWM);
+    while (led == prev_led) led = random(TOTAL_OUT);
 //    Serial.print(led);
-    
+
   // fade in from min to max in increments of 5 points
     for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
       // sets the value (range from 0 to 255):
-      analogWrite(PWMS[led], fadeValue);
+      analogWrite(OUTS[led], fadeValue);
       // wait for 50 milliseconds to see the dimming effect
       delay(fast_delay_time);
     }
@@ -172,14 +157,13 @@ void random_chase(){
     // fade out from max to min in decrements of 5 points
     for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
       // sets the value (range from 0 to 255):
-      analogWrite(PWMS[led], fadeValue);
+      analogWrite(OUTS[led], fadeValue);
       // wait for 50 milliseconds to see the dimming effect
       delay(fast_delay_time);
     }
     prev_led = led;
     fast_delay_time -= 5;
     if (fast_delay_time <= FAST_MIN_DELAY) fast_delay_time = FAST_MIN_DELAY;
-    //if (repeats >= MAX_REPEATS) delay_time = MAX_DELAY;
   }
   fast_delay_time = FAST_MAX_DELAY;
 }
@@ -192,8 +176,6 @@ void random_strobe(){
 
     int led = NULL;
     while (led == prev_led) led = random(TOTAL_OUT + 1);
-//    Serial.print(led);
-//    Serial.print("init ");
 
     digitalWrite(led, HIGH);
     delay(50);
@@ -210,8 +192,6 @@ void random_strobe(){
     digitalWrite(led, HIGH);
     delay(50);
     digitalWrite(led, LOW);
-//    Serial.print("\n");
-//    Serial.print(led);
 
     prev_led = led;
   }
@@ -241,9 +221,9 @@ void all_pulse(){
     for(int led = 0; led <= TOTAL_OUT; led ++){
       digitalWrite(led, HIGH);
     }
-    
+
     delay(delay_time * 2);
-    
+
     for(int led = 0; led <= TOTAL_OUT; led ++){
       digitalWrite(led, LOW);
     }
@@ -253,4 +233,3 @@ void all_pulse(){
   }
   delay_time = MAX_DELAY;
 }
-
